@@ -1,7 +1,9 @@
 # eero-client-docker
 
 ## Build:
-```docker build -t eero-client:latest .```
+```
+docker build -t eero-client:latest .
+```
 
 ## Run:
 ```
