@@ -1,14 +1,10 @@
-FROM python:3.10
+FROM python:3.7-alpine
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && \
-	apt-get install -y \
-		jq \
-		&& \
-	rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache jq
 
-RUN pip install \
+RUN pip install --no-cache-dir \
 		six \
 		&& \
 	echo "Finished installing prerequisite modules"
