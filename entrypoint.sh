@@ -6,11 +6,12 @@ if [ ! -d "/data" ]; then
 	exit 1
 fi
 
-if [ -f "/data/session.cookie" ]; then
-	cp "/data/session.cookie" ./session.cookie
-else
+if [ ! -f "session.cookie" ]; then
+	if [ ! -t 0 ] ; then
+		echo "You first need to log in. To do this, please include the '-it' flag in your docker run."
+		exit 1
+	fi
 	python sample.py
-	cp ./session.cookie "/data/session.cookie"
 fi
 
 CMD="$1"

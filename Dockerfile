@@ -15,6 +15,8 @@ RUN rm -f session.cookie
 RUN chmod 755 *.py
 RUN python ./setup.py install
 
+RUN ln -s /data/session.cookie ./session.cookie
+
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
