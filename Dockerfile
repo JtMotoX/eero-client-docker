@@ -1,5 +1,7 @@
 FROM python:3.7-alpine
 
+RUN apk add --no-cache curl
+
 RUN apk add --no-cache jq
 
 RUN pip install --no-cache-dir \
