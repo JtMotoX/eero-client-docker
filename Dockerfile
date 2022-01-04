@@ -1,7 +1,5 @@
 FROM python:3.7-alpine
 
-ENV DEBIAN_FRONTEND=noninteractive
-
 RUN apk add --no-cache jq
 
 RUN pip install --no-cache-dir \
