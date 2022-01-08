@@ -15,3 +15,8 @@ Examples:
 - devices
 
 *Note: It will prompt for authentication the first time you run it.*
+
+## Example
+
+Here is a sample project where you can see how this Docker image can be used:\
+[JtMotoX/eero-monitor](https://github.com/JtMotoX/eero-monitor)
