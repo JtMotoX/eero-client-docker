@@ -1,29 +1,36 @@
-FROM alpine/git as eero_client
-WORKDIR /eero-client
-RUN git clone -n https://github.com/343max/eero-client.git . && \
-	git checkout 629bc5719a5bc1f87498d6561c88a6393614b172 && \
-	rm -rf .git && \
-	chmod 755 *.py
+FROM python:alpine as base_image
+
+ENV VENV_DIR="/venv"
+ENV PATH="${VENV_DIR}/bin:$PATH"
+ENV EERO_DIR="/eero-client"
+ENV PATH="${EERO_DIR}:$PATH"
+
+###
+FROM base_image as builder_image
+WORKDIR "${EERO_DIR}"
+RUN apk add --no-cache git
+RUN git clone -n https://github.com/343max/eero-client.git .
+# RUN git checkout 629bc5719a5bc1f87498d6561c88a6393614b172
+RUN git checkout master
+RUN rm -rf .git
+RUN python3 -m venv "${VENV_DIR}"
+RUN pip install --upgrade pip
+RUN pip install -r ./requirements.txt
+RUN pip install .
+RUN pip uninstall -y pip setuptools
+RUN find "${VENV_DIR}/bin" -name '*ctivate*' -maxdepth 1 -exec rm -f {} \;
+RUN ls -l "${VENV_DIR}/bin"
+RUN find . ! -path "./sample.py" -delete
+RUN sample.py --help
 
 ###
 
-FROM python:3.7-alpine as final_image
-
+FROM base_image as final_image
 RUN apk add --no-cache curl
-
 RUN apk add --no-cache jq
-
-RUN pip install --no-cache-dir \
-		six \
-		&& \
-	echo "Finished installing prerequisite modules"
-
-WORKDIR /eero-client
-COPY --from=eero_client /eero-client .
-RUN python ./setup.py install
-
+COPY --from=builder_image "${VENV_DIR}" "${VENV_DIR}"
+WORKDIR "${EERO_DIR}"
+COPY --from=builder_image /eero-client .
 RUN ln -s /data/session.cookie ./session.cookie
-
-COPY ./entrypoint.sh /entrypoint.sh
-RUN chmod 755 /entrypoint.sh
+COPY --chmod=755 ./entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
