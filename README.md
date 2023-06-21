@@ -1,6 +1,6 @@
 # Eero Client Docker
 
-This is a Docker image that allows you to run [343max/eero-client](https://github.com/343max/eero-client.git) with a single command.
+This is a lightweight (~20mb compressed) Docker image that allows you to run [343max/eero-client](https://github.com/343max/eero-client.git) with a single command.
 
 ## Usage
 
