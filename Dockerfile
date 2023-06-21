@@ -19,7 +19,6 @@ RUN pip install -r ./requirements.txt
 RUN pip install .
 RUN pip uninstall -y pip setuptools
 RUN find "${VENV_DIR}/bin" -name '*ctivate*' -maxdepth 1 -exec rm -f {} \;
-RUN ls -l "${VENV_DIR}/bin"
 RUN find . ! -path "./sample.py" -delete
 RUN sample.py --help
 
